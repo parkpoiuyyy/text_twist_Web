@@ -1,0 +1,164 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+
+<p class="header" >
+    <b style='font-family:"Arial Black", Gadget, sans-serif;font-size: 30px;'>Park's Text Twist:</b>
+    <br>
+    <br>
+    <input class="myButton" type="button" value="START" onclick="getRack()">
+    <br>
+
+</p>
+
+<p class="header"  style='font-family:"Comic Sans MS", cursive, sans-serif;text-align: center;font-size: 40px;'><span id="shuffledLetter" > </span></p>
+
+<form class="game" > 
+<input class="myButton" type="button" value="Show Game" onclick="generateWord()">
+<p class="box"><span id="rackResult"></span></p>
+
+
+</form>
+
+
+
+
+<form class="guess" > 
+<input class="myButton" type="button" value="TWIST" onclick="shuffle()" >
+<br>
+<p style='font-family:"Trebuchet MS", Helvetica, sans-serif;font-size: 30px;'>Make your guess: <input type="text" name="userGuess" >
+<input class="myButton" type="button" value="Try" onclick="checkGuess(this.form.userGuess.value)">
+</p>
+<br>
+<input class="myButton" type="button" value="Good Game, Well Played" onclick="showAnswer()">
+<br>
+<input class="myButton" type="button" value="Another Round" onclick="anotherRound()">
+
+</form>
+
+
+
+
+
+
+<script>
+function getRack(){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("shuffledLetter").innerHTML = this.responseText;
+                totalRack=this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "getRack.php", true);
+        xmlhttp.send();
+}
+
+
+function generateWord() {
+    var str=totalRack;
+    if (str.length == 0) { 
+        document.getElementById("rackResult").innerHTML = "";
+        return;
+    } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var obj=JSON.stringify(this.responseText);
+
+                var regexp = /[A-Z]*[A-Z]/g;
+                rs = obj.match(regexp);
+                rs.sort(function(a, b){
+  
+                    return a.length - b.length;
+                });
+                document.getElementById("rackResult").innerHTML="<br>";
+                for (var i=0; i< rs.length;i++){
+                    var n=rs[i].length;
+                    for(var x=0;x<n;x++){
+                     document.getElementById("rackResult").innerHTML += ("|"+"_"+"|" );
+                    }
+                    document.getElementById("rackResult").innerHTML += "<br>";
+                }
+                checkarray=new Array();
+                for (var y=0;y<rs.length;y++){
+                      checkarray[y] = "0";
+    
+                }
+                
+               
+               //document.getElementById("rackResult").innerHTML = this.responseText;
+
+            }
+        };
+        xmlhttp.open("GET", "generateWord.php?q=" + str, true);
+        xmlhttp.send();
+    }
+}
+</script>
+
+
+<script>
+
+function checkGuess(str1) {
+    var str = str1.toUpperCase();
+
+    var check="<br>";
+    if (str.length == 0) { 
+        
+        return;
+    } else {
+                for (var i=0; i< rs.length;i++){
+                    var n=rs[i].length;
+                    if(str==rs[i] || checkarray[i] =="1"){
+                        checkarray[i]="1";
+                        check += rs[i]+"<br>";
+                    }else{
+                    for(var x=0;x<n;x++){
+                     check += ("|"+"_"+"|" );
+                    }
+                    check += "<br>";
+                    }
+                }
+            document.getElementById("rackResult").innerHTML=check;
+            
+
+    }
+}
+function showAnswer(){
+                document.getElementById("rackResult").innerHTML="<br>";
+                for (var i=0; i< rs.length;i++){
+        
+                    document.getElementById("rackResult").innerHTML += rs[i]+"<br>";
+                }
+}
+
+function anotherRound(){
+    document.getElementById("rackResult").innerHTML="";
+    checkarray="";
+    document.getElementById("shuffledLetter").innerHTML="";
+}
+
+
+function shuffle() {
+    var str=totalRack;
+    var parts = str.split('');
+    for (var i = parts.length; i > 0;) {
+        var random = parseInt(Math.random() * i);
+        var temp = parts[--i];
+        parts[i] = parts[random];
+        parts[random] = temp;
+    }
+    document.getElementById("shuffledLetter").innerHTML=parts.join('');
+}
+</script>
+
+
+
+</body>
+
+</html>
