@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Geemail123 by GongyuanHe</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Gee-mail</h1>
+        <h2></h2>
+        <a href="https://github.com/GongyuanHe/geemail123" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          
+          <img src="images/geemail.png"  style="width:683px;height:537px;">
+           <h1>Feature</h1>
+             <ul>
+                <li>Web based user interface</li>
+                <li>Secure mail service system supported by database server</li>
+                <li>All data stored in hash style except for username</li>
+                <li>Required passphrase to encrypt and decrypt message by salsa20</li>
+             </ul>
+          
+          
+          <h1>Detail</h1>
+          <p>Gee-mail is a mail service system with security consideration, including login,register, read message and write message function. The source code is written in C++ and the executable file is called in php. </p>
+          <br>
+          <p>We create the database in SQLite3. There are two tables. Table user contains user and passwd. Table message contains column message id, send, receiver, cipher message. All stored data is encrypted except for username.  </p>
+          <br>
+          <p>In our design, it requires users to type in the passphrase to read or write message. Passphrase is the secret between every two users and we are not allowed to store it in database.</p>
+        
+        </section>
+        
+
+        <aside id="sidebar">
+  
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
