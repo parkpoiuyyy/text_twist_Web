@@ -29,22 +29,23 @@
       <div class="inner clearfix">
         <section id="main-content">
           
-          <img src="images/geemail.png"  style="width:683px;height:537px;">
+          <img src="images/texttwist.png"  style="width:683px;height:537px;">
            <h1>Feature</h1>
              <ul>
-                <li>Web based user interface</li>
-                <li>Secure mail service system supported by database server</li>
-                <li>All data stored in hash style except for username</li>
-                <li>Required passphrase to encrypt and decrypt message by salsa20</li>
+                <li>A word puzzle web application written in Javascript and PHP</li>
+                <li>All answer is given by a sqlite database</li>
+                <li>Players have multiple choice like twist the given letter set and show whole answer</li>
+               
              </ul>
           
           
           <h1>Detail</h1>
-          <p>Gee-mail is a mail service system with security consideration, including login,register, read message and write message function. The source code is written in C++ and the executable file is called in php. </p>
+          <p>Text Twist is a simple word puzzle. Players first are given a random set of characters and need to guess the words composed by this characters. The answer set is fixed and players have multiple choices like twist the given characters, show all answers and restart.</p>
           <br>
-          <p>We create the database in SQLite3. There are two tables. Table user contains user and passwd. Table message contains column message id, send, receiver, cipher message. All stored data is encrypted except for username.  </p>
+          <p>The whole workspace contains two php files, one index page and one sqlite database. In the index page, several functions are written in Javascript. One php file 
+              generates the random set of characters and the other is responsible for database query. The index page communicate with php files by AJAX and all the data is sent back in JSON format.</p>
           <br>
-          <p>In our design, it requires users to type in the passphrase to read or write message. Passphrase is the secret between every two users and we are not allowed to store it in database.</p>
+
         
         </section>
         
