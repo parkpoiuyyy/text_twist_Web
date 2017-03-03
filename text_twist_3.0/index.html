@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+<head>
+
+  <script>
+    //create session
+    function createSession(str) {
+      if (str.length == 0) {
+        alert("Your name is void?");
+        return;
+      } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+
+          }
+        };
+        xmlhttp.open("GET", "createSession.php?q=" + str, true);
+        xmlhttp.send();
+      }
+    }
+
+
+    //get random rack from server
+    function getRack() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("shuffledLetter").innerHTML = this.responseText;
+          totalRack = this.responseText;
+          generateWord();
+
+
+        }
+      };
+      xmlhttp.open("GET", "getRack.php", true);
+      xmlhttp.send();
+    }
+
+    //get query result from server
+    //generate game record array
+    function generateWord() {
+      var str = totalRack;
+
+      if (str.length == 0) {
+        //document.getElementById("rackResult").innerHTML = "";
+        //return;
+      } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.stringify(this.responseText);
+
+            var regexp = /[A-Z]*[A-Z]/g;
+            rs = obj.match(regexp);
+            rs.sort(function(a, b) {
+
+              return a.length - b.length;
+            });
+            document.getElementById("rackResult").innerHTML = "";
+            $("#invisi").css("background-color", "#cdeb6c");
+            $("#guess").show();
+            for (var i = 0; i < rs.length; i++) {
+              var n = rs[i].length;
+              for (var x = 0; x < n; x++) {
+                document.getElementById("rackResult").innerHTML += ('<div class="div1">&nbsp</div>');
+              }
+              document.getElementById("rackResult").innerHTML += "<br>";
+            }
+            checkarray = new Array();
+            for (var y = 0; y < rs.length; y++) {
+              checkarray[y] = "0";
+
+            }
+            saveRs();
+            saveCheckarray();
+
+            //document.getElementById("rackResult").innerHTML = this.responseText;
+
+          }
+        };
+        xmlhttp.open("GET", "generateWord.php?q=" + str, true);
+        xmlhttp.send();
+      }
+    }
+
+    // save rs record
+    function saveRs() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          //document.getElementById("shuffledLetter").innerHTML = this.responseText;
+
+
+
+        }
+      };
+      xmlhttp.open("GET", "saveRs.php?q=" + rs, true);
+      xmlhttp.send();
+    }
+
+
+    // print out guess result based on every guess
+    function checkGuess(str1) {
+      var str = str1.toUpperCase();
+      document.getElementById("theguess").value = "";
+      var check = "<br>";
+      if (str.length == 0) {
+
+        return;
+      } else {
+        for (var i = 0; i < rs.length; i++) {
+          var n = rs[i].length;
+          if (str == rs[i] || checkarray[i] == "1") {
+            checkarray[i] = "1";
+            for(var y=0;y<n;y++){
+               check += ('<div class="div2">'+rs[i][y]+'</div>');
+            }
+            check += "<br>";
+            saveCheckarray();
+
+          } else {
+
+            for (var x = 0; x < n; x++) {
+              check += ('<div class="div1">&nbsp</div>');
+            }
+            check += "<br>";
+          }
+        }
+        document.getElementById("rackResult").innerHTML = check;
+
+
+      }
+    }
+
+
+    //save checkarry record
+    function saveCheckarray() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          //document.getElementById("shuffledLetter").innerHTML = this.responseText;
+
+
+
+        }
+      };
+      xmlhttp.open("POST", "saveCheckarray.php?q=" + checkarray, true);
+      xmlhttp.send();
+    }
+
+    //print out all answer
+    function showAnswer() {
+      document.getElementById("rackResult").innerHTML = "<br>";
+      for (var i = 0; i < rs.length; i++) {
+            var n = rs[i].length;
+
+            for(var y=0;y<n;y++){
+               document.getElementById("rackResult").innerHTML  += ('<div class="div2">'+rs[i][y]+'</div>');
+            }
+            document.getElementById("rackResult").innerHTML  += "<br>";
+
+
+      }
+
+    }
+
+    //start over
+    function anotherRound() {
+      document.getElementById("rackResult").innerHTML = "";
+      $("#invisi").css("background-color", "#d076de");
+      $("#guess").hide();
+      checkarray = "";
+      rs = "";
+      document.getElementById("shuffledLetter").innerHTML = "";
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          //document.getElementById("shuffledLetter").innerHTML = this.responseText;
+
+
+
+        }
+      };
+      xmlhttp.open("GET", "startover.php", true);
+      xmlhttp.send();
+    }
+
+    //reorder the given rack
+    function shuffle() {
+      var str = totalRack;
+      var parts = str.split('');
+      for (var i = parts.length; i > 0;) {
+        var random = parseInt(Math.random() * i);
+        var temp = parts[--i];
+        parts[i] = parts[random];
+        parts[random] = temp;
+      }
+      document.getElementById("shuffledLetter").innerHTML = parts.join('');
+
+
+    }
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    //get user cookie from server session
+    $(document).ready(function() {
+      $("#theguess").bind("keypress", function(e) {
+        if (e.keyCode == 13) {
+          checkGuess(this.form.userGuess.value);
+          return false;
+        }
+      });
+    });
+
+    function cookieCheck() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("cookieResult").innerHTML = this.responseText;
+        }
+      };
+      xmlhttp.open("GET", "cookieCheck.php", true);
+      xmlhttp.send();
+    }
+
+
+    // Resume rack record
+    function rackRecord() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("shuffledLetter").innerHTML = this.responseText;
+          totalRack = this.responseText;
+        }
+      };
+      xmlhttp.open("GET", "rackRecord.php", true);
+      xmlhttp.send();
+    }
+
+    //get rs record
+    function getRs() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          //document.getElementById("shuffledLetter").innerHTML = this.responseText;
+          var str = this.responseText;
+          rs = str.split(",");
+          firstLoad();
+        }
+      };
+      xmlhttp.open("GET", "getRs.php", true);
+      xmlhttp.send();
+    }
+
+    //get checkarray
+    function getCheckarray() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          //document.getElementById("shuffledLetter").innerHTML = this.responseText;
+          var str = this.responseText;
+          checkarray = str.split(",");
+          firstLoad();
+        }
+      };
+      xmlhttp.open("GET", "getCheckarray.php", true);
+      xmlhttp.send();
+    }
+
+    function firstLoad() {
+
+      var check = "";
+
+      for (var i = 0; i < rs.length; i++) {
+        var n = rs[i].length;
+        
+        if (checkarray[i] == "1") {
+
+          for (var y = 0; y < n; y++) {
+              check += ('<div class="div2">'+rs[i][y]+'</div>');
+          }
+          check += "<br>";
+         
+        } else {
+
+          for (var x = 0; x < n; x++) {
+            check += ('<div class="div1">&nbsp</div>');
+          }
+          check += "<br>";
+        }
+      }
+      if (rs==""){
+      
+      //document.getElementById("rackResult").innerHTML = 111;
+      $("#invisi").css("background-color", "#d076de");
+      $("#guess").hide();
+      }
+      else{
+      document.getElementById("rackResult").innerHTML = check;
+      }
+
+    }
+
+
+
+    function start() {
+      cookieCheck();
+      rackRecord();
+      getRs();
+      getCheckarray();
+
+    }
+
+    window.onload = start;
+  </script>
+</head>
+
+<body style="background-color: #d076de">
+  <div class="header" style="background-color: #71dff0;text-align: center">
+  <p>
+    <b style='font-family:"Arial Black", Gadget, sans-serif;font-size: 30px;'>Park's Text Twist</b>
+    <br>
+    <br>
+    <p style='font-family:"Trebuchet MS", Helvetica, sans-serif;font-size: 30px;text-align: center;'><span id="cookieResult"></span></p>
+    <br>
+    <input class="myButton" type="button"  value="START" onclick="getRack()">
+    <br>
+    <p style='font-family:"Comic Sans MS", sans-serif;text-align: center;font-size: 40px;'><span id="shuffledLetter"> </span></p>
+  </p>
+  </div>
+
+
+  
+  
+  
+  <div class="row">
+  <div id="invisi" class="col-6" style="background-color: #cdeb6c">
+    <p><span id="rackResult" ></span></p>
+    
+  </div>
+  
+
+
+<div id="guess" class="col-6">
+  <form >
+    <input class="myButton" type="button" value="TWIST" onclick="shuffle()">
+    <br>
+    <p style='font-family:"Trebuchet MS", Helvetica, sans-serif;font-size: 30px;'>Make your guess:
+      <input type="text" name="userGuess" id="theguess">
+      <br>
+      <input class="myButton" type="button" value="Try" onclick="checkGuess(this.form.userGuess.value);saveCheckarray();" id="try">
+    </p>
+
+    <br>
+    <input class="myButton" type="button" value="Good Game" onclick="showAnswer()">
+    <br>
+    <input class="myButton" type="button" value="Start Over" onclick="anotherRound()">
+    <br>
+  
+  </form>
+</div>    
+</div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
