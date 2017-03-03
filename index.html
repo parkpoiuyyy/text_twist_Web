@@ -32,8 +32,9 @@
           <img src="images/text_twist.png"  style="width:683px;height:537px;">
            <h1>Feature</h1>
              <ul>
-                <li>A word puzzle web application written in Javascript and PHP</li>
-                <li>All answer is given by a sqlite database</li>
+                <li>A word puzzle web application written in Javascript</li>
+                <li>With session and cookie function, users can automatically login in and resum the game</li>
+                <li>All answer is given by a sqlite database on server side</li>
                 <li>Players have multiple choices like twist the given letter set and show whole answer</li>
                
              </ul>
@@ -42,8 +43,9 @@
           <h1>Detail</h1>
           <p>Text Twist is a simple word puzzle. Players first are given a random set of characters and need to guess the words composed by these characters. The answer set is fixed and players have multiple choices like twist the given characters, show all answer and restart the game.</p>
           <br>
-          <p>The whole workspace contains two php files, one index page and one sqlite database. In the index page, several functions are written in Javascript. One php file 
-              generates the random set of characters and the other is responsible for database query. The index page communicate with php files by AJAX and all the data is sent back in JSON format.</p>
+          <p>The whole workspace contains serveral php files, one index page and one sqlite database. In the index page, functions are written in Javascript. One php file 
+              generates the random set of characters and the other is responsible for database query. The index page communicate with php files by AJAX and all the data is sent back in JSON format.
+              With the php session, this game can remember previous user's name and game record, whhich is exactly the cookie function.</p>
           <br>
 
         
